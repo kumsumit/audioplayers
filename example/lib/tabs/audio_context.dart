@@ -29,7 +29,7 @@ class AudioContextTabState extends State<AudioContextTab>
   AudioContextConfig audioContextConfig = AudioContextConfig();
 
   /// Set config for each platform individually
-  AudioContext audioContext = const AudioContext();
+  AudioContext audioContext = AudioContext();
 
   bool isLocal = true;
   bool isGlobal = false;
@@ -248,7 +248,7 @@ class AudioContextTabState extends State<AudioContextTab>
           ({value}) {
             updateAudioContextIOS(() {
               final iosContext = audioContext.iOS.copy(
-                options: options.toList(),);
+                options: options,);
               if (value ?? false) {
                 options.add(option);
               } else {
