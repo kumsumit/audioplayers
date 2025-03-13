@@ -13,21 +13,17 @@ void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   final features = PlatformFeatures.instance();
   final isAndroid = !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
-  final isIOS = !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
-  final isMacOS = !kIsWeb && defaultTargetPlatform == TargetPlatform.macOS;
   final audioTestDataList = await getAudioTestDataList();
 
   testWidgets('test asset source with special char',
       (WidgetTester tester) async {
     final player = AudioPlayer();
 
-    await tester.pumpLinux();
     await player.play(specialCharAssetTestData.source);
     // Sources take some time to get initialized
-    await tester.pump(const Duration(seconds: 8));
+    await tester.pumpPlatform(const Duration(seconds: 8));
     await player.stop();
 
-    await tester.pumpLinux();
     await player.dispose();
   });
 
@@ -36,15 +32,13 @@ void main() async {
     (WidgetTester tester) async {
       final player = AudioPlayer();
 
-      await tester.pumpLinux();
       final path = await player.audioCache.loadPath(specialCharAsset);
       expect(path, isNot(contains('%'))); // Ensure path is not URL encoded
       await player.play(DeviceFileSource(path));
       // Sources take some time to get initialized
-      await tester.pump(const Duration(seconds: 8));
+      await tester.pumpPlatform(const Duration(seconds: 8));
       await player.stop();
 
-      await tester.pumpLinux();
       await player.dispose();
     },
     skip: kIsWeb,
@@ -53,13 +47,11 @@ void main() async {
   testWidgets('test url source with special char', (WidgetTester tester) async {
     final player = AudioPlayer();
 
-    await tester.pumpLinux();
     await player.play(specialCharUrlTestData.source);
     // Sources take some time to get initialized
-    await tester.pump(const Duration(seconds: 8));
+    await tester.pumpPlatform(const Duration(seconds: 8));
     await player.stop();
 
-    await tester.pumpLinux();
     await player.dispose();
   });
 
@@ -68,18 +60,39 @@ void main() async {
     (WidgetTester tester) async {
       final player = AudioPlayer();
 
-      await tester.pumpLinux();
       await player.play(noExtensionAssetTestData.source);
       // Sources take some time to get initialized
-      await tester.pump(const Duration(seconds: 8));
+      await tester.pumpPlatform(const Duration(seconds: 8));
       await player.stop();
 
-      await tester.pumpLinux();
       await player.dispose();
     },
-    // Darwin does not support files without extension unless its specified
-    // #803, https://stackoverflow.com/a/54087143/5164462
-    skip: isIOS || isMacOS,
+  );
+
+  testWidgets('data URI source', (WidgetTester tester) async {
+    final player = AudioPlayer();
+
+    await player.play(mp3DataUriTestData.source);
+    // Sources take some time to get initialized
+    await tester.pumpPlatform(const Duration(seconds: 8));
+    await player.stop();
+
+    await player.dispose();
+  });
+
+  testWidgets(
+    'bytes array source',
+    (WidgetTester tester) async {
+      final player = AudioPlayer();
+
+      await player.play((await mp3BytesTestData()).source);
+      // Sources take some time to get initialized
+      await tester.pumpPlatform(const Duration(seconds: 8));
+      await player.stop();
+
+      await player.dispose();
+    },
+    skip: !features.hasBytesSource,
   );
 
   group('AP events', () {
@@ -101,8 +114,6 @@ void main() async {
       testWidgets(
         '#positionEvent with $positionUpdaterName: ${td.source}',
         (tester) async {
-          await tester.pumpLinux();
-
           if (useTimerPositionUpdater) {
             player.positionUpdater = TimerPositionUpdater(
               getPosition: player.getCurrentPosition,
@@ -127,7 +138,6 @@ void main() async {
             await player.stop();
             expect(player.state, PlayerState.stopped);
           }
-          await tester.pumpLinux();
           await player.dispose();
           final positions = await futurePositions;
           printOnFailure('Positions: $positions');
@@ -141,11 +151,14 @@ void main() async {
             expect(positions.last, Duration.zero);
           }
         },
-        // FIXME(gustl22): Android provides no position for samples shorter
-        //  than 0.5 seconds.
-        skip: isAndroid &&
-            !td.isLiveStream &&
-            td.duration! < const Duration(seconds: 1),
+        skip:
+            // FIXME(gustl22): [FLAKY] macos 13 fails on live streams.
+            (isMacOS && td.isLiveStream) ||
+                // FIXME(gustl22): Android provides no position for samples
+                //  shorter than 0.5 seconds.
+                (isAndroid &&
+                    !td.isLiveStream &&
+                    td.duration! < const Duration(seconds: 1)),
       );
     }
 
@@ -166,22 +179,19 @@ void main() async {
 
         // Start all players simultaneously
         final iterator = List<int>.generate(audioTestDataList.length, (i) => i);
-        await tester.pumpLinux();
         await Future.wait<void>(
           iterator.map((i) => players[i].play(audioTestDataList[i].source)),
         );
         // Sources take some time to get initialized
-        await tester.pump(const Duration(seconds: 8));
+        await tester.pumpPlatform(const Duration(seconds: 8));
         for (var i = 0; i < audioTestDataList.length; i++) {
           final td = audioTestDataList[i];
           if (td.isLiveStream || td.duration! > const Duration(seconds: 10)) {
-            await tester.pump();
             final position = await players[i].getCurrentPosition();
             printWithTimeOnFailure('Test position: $td');
             expect(position, greaterThan(Duration.zero));
           }
           await players[i].stop();
-          await tester.pumpLinux();
         }
         await Future.wait(players.map((p) => p.dispose()));
       },
@@ -196,19 +206,16 @@ void main() async {
       final player = AudioPlayer();
 
       for (final td in audioTestDataList) {
-        await tester.pumpLinux();
         await player.play(td.source);
         // Sources take some time to get initialized
-        await tester.pump(const Duration(seconds: 8));
+        await tester.pumpPlatform(const Duration(seconds: 8));
         if (td.isLiveStream || td.duration! > const Duration(seconds: 10)) {
-          await tester.pump();
           final position = await player.getCurrentPosition();
           printWithTimeOnFailure('Test position: $td');
           expect(position, greaterThan(Duration.zero));
         }
         await player.stop();
       }
-      await tester.pumpLinux();
       await player.dispose();
     });
   });
@@ -235,10 +242,10 @@ void main() async {
         await AudioPlayer.global.setAudioContext(audioContext);
         await player.setAudioContext(audioContext);
 
-        await tester.pumpLinux();
         await player.play(td.source);
-        await tester
-            .pump((td.duration ?? Duration.zero) + const Duration(seconds: 8));
+        await tester.pumpPlatform(
+          (td.duration ?? Duration.zero) + const Duration(seconds: 8),
+        );
         expect(player.state, PlayerState.completed);
 
         audioContext = AudioContextConfig(
@@ -250,13 +257,38 @@ void main() async {
         await player.setAudioContext(audioContext);
 
         await player.resume();
-        await tester
-            .pump((td.duration ?? Duration.zero) + const Duration(seconds: 8));
+        await tester.pumpPlatform(
+          (td.duration ?? Duration.zero) + const Duration(seconds: 8),
+        );
         expect(player.state, PlayerState.completed);
-        await tester.pumpLinux();
         await player.dispose();
       },
       skip: !features.hasRespectSilence,
+    );
+
+    testWidgets(
+      'Set global AudioContextConfig on unsupported platforms',
+      (WidgetTester tester) async {
+        final audioContext = AudioContextConfig().build();
+        final globalLogFuture = AudioPlayer.global.onLog.first;
+        await AudioPlayer.global.setAudioContext(audioContext);
+
+        expect(
+          await globalLogFuture,
+          contains('Setting AudioContext is not supported'),
+        );
+
+        final player = AudioPlayer();
+        final logFuture = player.onLog.first;
+        await player.setAudioContext(audioContext);
+        expect(
+          await logFuture,
+          contains('Setting AudioContext is not supported'),
+        );
+
+        await player.dispose();
+      },
+      skip: features.hasRespectSilence,
     );
 
     /// Android and iOS only: Play the same sound twice with a different audio
@@ -281,11 +313,11 @@ void main() async {
         await AudioPlayer.global.setAudioContext(audioContext);
         await player.setAudioContext(audioContext);
 
-        await tester.pumpLinux();
         await player.setSource(td.source);
         await player.resume();
-        await tester
-            .pump((td.duration ?? Duration.zero) + const Duration(seconds: 8));
+        await tester.pumpPlatform(
+          (td.duration ?? Duration.zero) + const Duration(seconds: 8),
+        );
         expect(player.state, PlayerState.playing);
         await player.stop();
         expect(player.state, PlayerState.stopped);
@@ -299,16 +331,38 @@ void main() async {
         await player.setAudioContext(audioContext);
 
         await player.resume();
-        await tester
-            .pump((td.duration ?? Duration.zero) + const Duration(seconds: 8));
+        await tester.pumpPlatform(
+          (td.duration ?? Duration.zero) + const Duration(seconds: 8),
+        );
         expect(player.state, PlayerState.playing);
         await player.stop();
         expect(player.state, PlayerState.stopped);
-        await tester.pumpLinux();
         await player.dispose();
       },
       skip: !features.hasRespectSilence || !features.hasLowLatency,
     );
+  });
+
+  testWidgets('Race condition on play and pause (#1687)',
+      (WidgetTester tester) async {
+    final player = AudioPlayer();
+
+    final futurePlay = player.play(mp3Url1TestData.source);
+
+    // Player is still in `stopped` state as it isn't playing yet.
+    expect(player.state, PlayerState.stopped);
+    expect(player.desiredState, PlayerState.playing);
+
+    // Execute `pause` before `play` has finished.
+    final futurePause = player.pause();
+    expect(player.desiredState, PlayerState.paused);
+
+    await futurePlay;
+    await futurePause;
+
+    expect(player.state, PlayerState.paused);
+
+    await player.dispose();
   });
 
   group(
@@ -323,11 +377,11 @@ void main() async {
           ..setReleaseMode(ReleaseMode.stop);
 
         await player.play(wavAsset1TestData.source);
-        await tester.pump(const Duration(seconds: 1));
+        await tester.pumpPlatform(const Duration(seconds: 1));
         await player.stop();
 
         await player.play(wavAsset2TestData.source);
-        await tester.pump(const Duration(seconds: 1));
+        await tester.pumpPlatform(const Duration(seconds: 1));
         await player.stop();
 
         player = AudioPlayer()
@@ -336,14 +390,14 @@ void main() async {
 
         // This should play the new source, not the old one:
         await player.play(wavAsset1TestData.source);
-        await tester.pump(const Duration(seconds: 1));
+        await tester.pumpPlatform(const Duration(seconds: 1));
         await player.stop();
 
         await player.play(wavAsset2TestData.source);
-        await tester.pump(const Duration(seconds: 1));
+        await tester.pumpPlatform(const Duration(seconds: 1));
         await player.stop();
       });
     },
-    skip: !isAndroid,
+    skip: !features.hasLowLatency,
   );
 }

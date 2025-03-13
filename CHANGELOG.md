@@ -1,3 +1,58 @@
+## 6.4.0
+
+ - **FEAT**: Dispose players on Hot restart (closes [#1120](https://github.com/bluefireteam/audioplayers/issues/1120)) ([#1905](https://github.com/bluefireteam/audioplayers/issues/1905)). ([92bcb19e](https://github.com/bluefireteam/audioplayers/commit/92bcb19e10c462cb749e1209c5e066efc5581728))
+
+## 6.3.0
+
+ - **FEAT**(android): ExoPlayer for Android ([#1691](https://github.com/bluefireteam/audioplayers/issues/1691)). ([a91c5b18](https://github.com/bluefireteam/audioplayers/commit/a91c5b185054986a2390d41593b5ee502ef96bdd))\
+   You can enable the non-endorsed plugin implementation based on ExoPlayer (Media3) by calling: `flutter pub add audioplayers_android_exo` in your app package folder.
+   For more, see: https://github.com/bluefireteam/audioplayers/blob/main/feature_parity_table.md#media3-exoplayer
+ - **FEAT**: Raise to Flutter 3.29.0 ([#1891](https://github.com/bluefireteam/audioplayers/issues/1891)). ([26bd6d22](https://github.com/bluefireteam/audioplayers/commit/26bd6d228deacf7cb3454f2d1b972585cd8bb6ea))
+ - **DOCS**: Fix status badge ([#1899](https://github.com/bluefireteam/audioplayers/issues/1899)). ([a0c6c4fa](https://github.com/bluefireteam/audioplayers/commit/a0c6c4fabff19e943dced1070c1be3541668dce9))
+
+## 6.2.0
+
+ - **FIX**: No-op on single player setAudioContext in desktop platforms ([#1888](https://github.com/bluefireteam/audioplayers/issues/1888)). ([50d7a8b8](https://github.com/bluefireteam/audioplayers/commit/50d7a8b89f47e3ef29e98cf2b74a582f78783d5e))
+ - **FEAT**: Support setting AudioContext in AudioPool ([#1890](https://github.com/bluefireteam/audioplayers/issues/1890)). ([2968c88b](https://github.com/bluefireteam/audioplayers/commit/2968c88b4e1492a29d4cd0e5f7735f159f995c1a))
+ - **FEAT**: ReleaseMode.release for ios, macos, windows, web, linux ([#1790](https://github.com/bluefireteam/audioplayers/issues/1790)). ([4ffc4029](https://github.com/bluefireteam/audioplayers/commit/4ffc4029d846d7c391c457b829c372c1763b7b50))
+
+## 6.1.2
+
+ - Update a dependency to the latest release.
+
+## 6.1.1
+
+ - Update a dependency to the latest release.
+
+## 6.1.0
+
+ - **FEAT**: Upgrade to Flutter v3.22.x ([#1803](https://github.com/bluefireteam/audioplayers/issues/1803)). ([4d669e72](https://github.com/bluefireteam/audioplayers/commit/4d669e723dc5c2399073301ba9333f99bc623669))
+
+## 6.0.0
+
+> Note: This release has breaking changes.
+
+ - **FIX**: Use unique tmp location for each AudioCache ([#1724](https://github.com/bluefireteam/audioplayers/issues/1724)). ([2333cb7f](https://github.com/bluefireteam/audioplayers/commit/2333cb7f5a9fcd84bdd477120d1f53f346c3b10d))
+ - **FIX**: Race condition when playing/pausing audio ([#1705](https://github.com/bluefireteam/audioplayers/issues/1705)). ([463b2a11](https://github.com/bluefireteam/audioplayers/commit/463b2a1149105a25f81d708533d13cc2dd277d6b))
+ - **FIX**: Seek not applied in `play` method ([#1695](https://github.com/bluefireteam/audioplayers/issues/1695)). ([f6138fef](https://github.com/bluefireteam/audioplayers/commit/f6138fef97ccd5b78b44dbe85f7d41e16b3662f6))
+ - **FIX**: Propagate Stream Errors through the same Future ([#1732](https://github.com/bluefireteam/audioplayers/issues/1732)). ([00d041df](https://github.com/bluefireteam/audioplayers/commit/00d041df11c26fd96f480782f2787f857c77daa0))
+ - **FIX**: Wait for seek to complete ([#1712](https://github.com/bluefireteam/audioplayers/issues/1712)). ([fd33b1d0](https://github.com/bluefireteam/audioplayers/commit/fd33b1d073280797cdd88fb6324cc1906bfd5957))
+ - **FEAT**: Support byte array and data URIs via mimeType ([#1763](https://github.com/bluefireteam/audioplayers/issues/1763)). ([eaf7ce86](https://github.com/bluefireteam/audioplayers/commit/eaf7ce86ad271097365fcf9e3a03fc341629ae47))
+ - **FEAT**(ios): Improved AudioContextConfig assertions, fix example ([#1619](https://github.com/bluefireteam/audioplayers/issues/1619)). ([df342c52](https://github.com/bluefireteam/audioplayers/commit/df342c529b0b13abd0515c5dc762987293ebc4c1))
+ - **FEAT**(web): Support compilation to Wasm ([#1766](https://github.com/bluefireteam/audioplayers/issues/1766)). ([1b1a0cf9](https://github.com/bluefireteam/audioplayers/commit/1b1a0cf92e950bc520598426d3f073c3bd5a6a28))
+ - **DOCS**: Improve Docs ([#1710](https://github.com/bluefireteam/audioplayers/issues/1710)). ([4208463a](https://github.com/bluefireteam/audioplayers/commit/4208463a4110ed117eebe28e170872817712ff53))
+ - **BREAKING** **REFACTOR**: Remove deprecated methods ([#1583](https://github.com/bluefireteam/audioplayers/issues/1583)). ([8d0cbeda](https://github.com/bluefireteam/audioplayers/commit/8d0cbeda6babea69b1753340f9cec3d246d7e29a))
+ - **BREAKING** **FEAT**: FramePositionUpdater & TimerPositionUpdater ([#1664](https://github.com/bluefireteam/audioplayers/issues/1664)). ([1ea93536](https://github.com/bluefireteam/audioplayers/commit/1ea93536b448fa5d43281cbc0a7b67445fc1a9a8))
+ - **BREAKING** **FEAT**: Extend `AudioContextConfig.duckAudio` to `AudioContextConfig.focus` ([#1720](https://github.com/bluefireteam/audioplayers/issues/1720)). ([87f3cb7e](https://github.com/bluefireteam/audioplayers/commit/87f3cb7e47e2103d2079a3dfe6aebe80c8a76c3d))
+ - **BREAKING** **FEAT**(ios): Improve AudioContextIOS ([#1591](https://github.com/bluefireteam/audioplayers/issues/1591)). ([25fbec05](https://github.com/bluefireteam/audioplayers/commit/25fbec051a4f521f73c473cdad20f88c7907d7b1))
+ - **BREAKING** **DEPS**: Update min Flutter to v3.13.0, compatibility with v3.16.8 ([#1715](https://github.com/bluefireteam/audioplayers/issues/1715)). ([e4262f4c](https://github.com/bluefireteam/audioplayers/commit/e4262f4c0d6582c35738ace603583c81bd5a3b4b))
+ - **BREAKING** **CHORE**: Upgrade to Flutter 3.13.0 ([#1612](https://github.com/bluefireteam/audioplayers/issues/1612)). ([1a3de1ac](https://github.com/bluefireteam/audioplayers/commit/1a3de1acd5a8b90b6d9c0d0f2a7141723c277c24))
+
+## 5.2.1
+
+ - **FIX**: Avoid decoding already encoded character in URI ([#1679](https://github.com/bluefireteam/audioplayers/issues/1679)). ([1923205c](https://github.com/bluefireteam/audioplayers/commit/1923205c4cde70e2915e6e6c6afeb2fec27a08e8))
+ - **FIX**(android): Released wrong source in LOW_LATENCY mode ([#1672](https://github.com/bluefireteam/audioplayers/issues/1672)). ([d9c5f693](https://github.com/bluefireteam/audioplayers/commit/d9c5f693cafab21b67b785de6244c3c371344a53))
+
 ## 5.2.0
 
  - **REFACTOR**: Lint Swift ([#1613](https://github.com/bluefireteam/audioplayers/issues/1613)). ([737aa94f](https://github.com/bluefireteam/audioplayers/commit/737aa94f7edb076d622c34e498b90f17c9959e9c))

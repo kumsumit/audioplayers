@@ -1,12 +1,25 @@
 import 'package:flutter/foundation.dart';
 
+const testFeatureBytesSource = bool.fromEnvironment(
+  'TEST_FEATURE_BYTES_SOURCE',
+  defaultValue: true,
+);
+
+const testFeaturePlaybackRate = bool.fromEnvironment(
+  'TEST_FEATURE_PLAYBACK_RATE',
+  defaultValue: true,
+);
+
+const testFeatureLowLatency = bool.fromEnvironment(
+  'TEST_FEATURE_LOW_LATENCY',
+  defaultValue: true,
+);
+
 /// Specify supported features for a platform.
 class PlatformFeatures {
   static const webPlatformFeatures = PlatformFeatures(
-    hasBytesSource: false,
     hasPlaylistSourceType: false,
     hasLowLatency: false,
-    hasReleaseModeRelease: false,
     hasForceSpeaker: false,
     hasDuckAudio: false,
     hasRespectSilence: false,
@@ -18,21 +31,27 @@ class PlatformFeatures {
 
   static const androidPlatformFeatures = PlatformFeatures(
     hasRecordingActive: false,
+    // ignore: avoid_redundant_argument_values
+    hasBytesSource: testFeatureBytesSource,
+    // ignore: avoid_redundant_argument_values
+    hasPlaybackRate: testFeaturePlaybackRate,
+    // ignore: avoid_redundant_argument_values
+    hasLowLatency: testFeatureLowLatency,
   );
 
   static const iosPlatformFeatures = PlatformFeatures(
+    hasDataUriSource: false,
     hasBytesSource: false,
     hasPlaylistSourceType: false,
-    hasReleaseModeRelease: false,
     hasLowLatency: false,
     hasBalance: false,
   );
 
   static const macPlatformFeatures = PlatformFeatures(
+    hasDataUriSource: false,
     hasBytesSource: false,
     hasPlaylistSourceType: false,
     hasLowLatency: false,
-    hasReleaseModeRelease: false,
     hasForceSpeaker: false,
     hasDuckAudio: false,
     hasRespectSilence: false,
@@ -43,9 +62,9 @@ class PlatformFeatures {
   );
 
   static const linuxPlatformFeatures = PlatformFeatures(
+    hasDataUriSource: false,
     hasBytesSource: false,
     hasLowLatency: false,
-    hasReleaseModeRelease: false,
     // MP3 duration is estimated: https://bugzilla.gnome.org/show_bug.cgi?id=726144
     // Use GstDiscoverer to get duration before playing: https://gstreamer.freedesktop.org/documentation/pbutils/gstdiscoverer.html?gi-language=c
     hasMp3Duration: false,
@@ -58,9 +77,9 @@ class PlatformFeatures {
   );
 
   static const windowsPlatformFeatures = PlatformFeatures(
+    hasDataUriSource: false,
     hasPlaylistSourceType: false,
     hasLowLatency: false,
-    hasReleaseModeRelease: false,
     hasForceSpeaker: false,
     hasDuckAudio: false,
     hasRespectSilence: false,
@@ -70,6 +89,7 @@ class PlatformFeatures {
   );
 
   final bool hasUrlSource;
+  final bool hasDataUriSource;
   final bool hasAssetSource;
   final bool hasBytesSource;
 
@@ -97,6 +117,7 @@ class PlatformFeatures {
 
   const PlatformFeatures({
     this.hasUrlSource = true,
+    this.hasDataUriSource = true,
     this.hasAssetSource = true,
     this.hasBytesSource = true,
     this.hasPlaylistSourceType = true,
