@@ -79,36 +79,39 @@ class _ControlsTabState extends State<ControlsTab>
         ),
         WrappedListTile(
           leading: const Text('Volume'),
-          children: [0.0, 0.5, 1.0, 2.0].map((it) {
-            final formattedVal = it.toStringAsFixed(1);
-            return Btn(
-              key: Key('control-volume-$formattedVal'),
-              txt: formattedVal,
-              onPressed: () => widget.player.setVolume(it),
-            );
-          }).toList(),
+          children:
+              [0.0, 0.5, 1.0, 2.0].map((it) {
+                final formattedVal = it.toStringAsFixed(1);
+                return Btn(
+                  key: Key('control-volume-$formattedVal'),
+                  txt: formattedVal,
+                  onPressed: () => widget.player.setVolume(it),
+                );
+              }).toList(),
         ),
         WrappedListTile(
           leading: const Text('Balance'),
-          children: [-1.0, -0.5, 0.0, 1.0].map((it) {
-            final formattedVal = it.toStringAsFixed(1);
-            return Btn(
-              key: Key('control-balance-$formattedVal'),
-              txt: formattedVal,
-              onPressed: () => widget.player.setBalance(it),
-            );
-          }).toList(),
+          children:
+              [-1.0, -0.5, 0.0, 1.0].map((it) {
+                final formattedVal = it.toStringAsFixed(1);
+                return Btn(
+                  key: Key('control-balance-$formattedVal'),
+                  txt: formattedVal,
+                  onPressed: () => widget.player.setBalance(it),
+                );
+              }).toList(),
         ),
         WrappedListTile(
           leading: const Text('Rate'),
-          children: [0.0, 0.5, 1.0, 2.0].map((it) {
-            final formattedVal = it.toStringAsFixed(1);
-            return Btn(
-              key: Key('control-rate-$formattedVal'),
-              txt: formattedVal,
-              onPressed: () => widget.player.setPlaybackRate(it),
-            );
-          }).toList(),
+          children:
+              [0.0, 0.5, 1.0, 2.0].map((it) {
+                final formattedVal = it.toStringAsFixed(1);
+                return Btn(
+                  key: Key('control-rate-$formattedVal'),
+                  txt: formattedVal,
+                  onPressed: () => widget.player.setPlaybackRate(it),
+                );
+              }).toList(),
         ),
         WrappedListTile(
           leading: const Text('Player Mode'),
@@ -162,14 +165,16 @@ class _ControlsTabState extends State<ControlsTab>
                   _SeekDialog(
                     value: modalInputSeek,
                     setValue: (it) => setState(() => modalInputSeek = it),
-                    seekDuration: () => _seekDuration(
-                      Duration(
-                        milliseconds: int.parse(modalInputSeek),
-                      ),
-                    ),
-                    seekPercent: () => _seekPercent(
-                      double.parse(modalInputSeek),
-                    ),
+                    seekDuration:
+                        () => _seekDuration(
+                          Duration(
+                            milliseconds: int.parse(modalInputSeek),
+                          ),
+                        ),
+                    seekPercent:
+                        () => _seekPercent(
+                          double.parse(modalInputSeek),
+                        ),
                   ),
                 );
               },

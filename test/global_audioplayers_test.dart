@@ -49,9 +49,7 @@ void main() {
             usageType: AndroidUsageType.media,
             audioFocus: AndroidAudioFocus.gain,
           ),
-          iOS: AudioContextIOS(
-            category: AVAudioSessionCategory.playback,
-          ),
+          iOS: AudioContextIOS(category: AVAudioSessionCategory.playback),
         ),
       );
     });
@@ -66,10 +64,7 @@ void main() {
         ),
       ];
 
-      expect(
-        globalScope.eventStream,
-        emitsInOrder(globalEvents),
-      );
+      expect(globalScope.eventStream, emitsInOrder(globalEvents));
 
       globalEvents.forEach(globalPlatform.eventStreamController.add);
       await globalPlatform.eventStreamController.close();

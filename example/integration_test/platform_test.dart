@@ -135,7 +135,8 @@ void main() async {
           );
         },
         // FIXME(gustl22): determines wrong initial position for m3u8 on Linux
-        skip: !canDetermineDuration(td) ||
+        skip:
+            !canDetermineDuration(td) ||
             isLinux && td.source == m3u8UrlTestData.source,
       );
     }
@@ -210,8 +211,9 @@ void main() async {
 
     for (final td in audioTestDataList) {
       if (features.hasSeek && !td.isLiveStream) {
-        testWidgets('#seek with millisecond precision ${td.source}',
-            (tester) async {
+        testWidgets('#seek with millisecond precision ${td.source}', (
+          tester,
+        ) async {
           await tester.prepareSource(
             playerId: playerId,
             platform: platform,
@@ -355,8 +357,9 @@ void main() async {
               (Duration? actual) => durationRangeMatcher(
                 actual,
                 td.duration,
-                deviation:
-                    Duration(milliseconds: td.isVBR || isWindows ? 100 : 1),
+                deviation: Duration(
+                  milliseconds: td.isVBR || isWindows ? 100 : 1,
+                ),
               ),
             );
           },
@@ -450,9 +453,10 @@ void main() async {
       final errorCompleter = Completer<Object>();
 
       /* final eventStreamSub = */
-      global
-          .getGlobalEventStream()
-          .listen((_) {}, onError: errorCompleter.complete);
+      global.getGlobalEventStream().listen(
+        (_) {},
+        onError: errorCompleter.complete,
+      );
 
       await global.emitGlobalError(
         'SomeGlobalErrorCode',

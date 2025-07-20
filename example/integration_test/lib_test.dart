@@ -15,8 +15,9 @@ void main() async {
   final isAndroid = !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
   final audioTestDataList = await getAudioTestDataList();
 
-  testWidgets('test asset source with special char',
-      (WidgetTester tester) async {
+  testWidgets('test asset source with special char', (
+    WidgetTester tester,
+  ) async {
     final player = AudioPlayer();
 
     await player.play(specialCharAssetTestData.source);
@@ -108,9 +109,10 @@ void main() async {
       LibSourceTestData td, {
       bool useTimerPositionUpdater = false,
     }) {
-      final positionUpdaterName = useTimerPositionUpdater
-          ? 'TimerPositionUpdater'
-          : 'FramePositionUpdater';
+      final positionUpdaterName =
+          useTimerPositionUpdater
+              ? 'TimerPositionUpdater'
+              : 'FramePositionUpdater';
       testWidgets(
         '#positionEvent with $positionUpdaterName: ${td.source}',
         (tester) async {
@@ -154,11 +156,11 @@ void main() async {
         skip:
             // FIXME(gustl22): [FLAKY] macos 13 fails on live streams.
             (isMacOS && td.isLiveStream) ||
-                // FIXME(gustl22): Android provides no position for samples
-                //  shorter than 0.5 seconds.
-                (isAndroid &&
-                    !td.isLiveStream &&
-                    td.duration! < const Duration(seconds: 1)),
+            // FIXME(gustl22): Android provides no position for samples
+            //  shorter than 0.5 seconds.
+            (isAndroid &&
+                !td.isLiveStream &&
+                td.duration! < const Duration(seconds: 1)),
       );
     }
 
@@ -174,8 +176,10 @@ void main() async {
     testWidgets(
       'play multiple sources simultaneously',
       (WidgetTester tester) async {
-        final players =
-            List.generate(audioTestDataList.length, (_) => AudioPlayer());
+        final players = List.generate(
+          audioTestDataList.length,
+          (_) => AudioPlayer(),
+        );
 
         // Start all players simultaneously
         final iterator = List<int>.generate(audioTestDataList.length, (i) => i);
@@ -201,8 +205,9 @@ void main() async {
       skip: isAndroid,
     );
 
-    testWidgets('play multiple sources consecutively',
-        (WidgetTester tester) async {
+    testWidgets('play multiple sources consecutively', (
+      WidgetTester tester,
+    ) async {
       final player = AudioPlayer();
 
       for (final td in audioTestDataList) {
@@ -233,12 +238,13 @@ void main() async {
 
         final td = wavUrl1TestData;
 
-        var audioContext = AudioContextConfig(
-          //ignore: avoid_redundant_argument_values
-          route: AudioContextConfigRoute.system,
-          //ignore: avoid_redundant_argument_values
-          respectSilence: false,
-        ).build();
+        var audioContext =
+            AudioContextConfig(
+              //ignore: avoid_redundant_argument_values
+              route: AudioContextConfigRoute.system,
+              //ignore: avoid_redundant_argument_values
+              respectSilence: false,
+            ).build();
         await AudioPlayer.global.setAudioContext(audioContext);
         await player.setAudioContext(audioContext);
 
@@ -248,11 +254,12 @@ void main() async {
         );
         expect(player.state, PlayerState.completed);
 
-        audioContext = AudioContextConfig(
-          //ignore: avoid_redundant_argument_values
-          route: AudioContextConfigRoute.system,
-          respectSilence: true,
-        ).build();
+        audioContext =
+            AudioContextConfig(
+              //ignore: avoid_redundant_argument_values
+              route: AudioContextConfigRoute.system,
+              respectSilence: true,
+            ).build();
         await AudioPlayer.global.setAudioContext(audioContext);
         await player.setAudioContext(audioContext);
 
@@ -304,12 +311,13 @@ void main() async {
 
         final td = wavUrl1TestData;
 
-        var audioContext = AudioContextConfig(
-          //ignore: avoid_redundant_argument_values
-          route: AudioContextConfigRoute.system,
-          //ignore: avoid_redundant_argument_values
-          respectSilence: false,
-        ).build();
+        var audioContext =
+            AudioContextConfig(
+              //ignore: avoid_redundant_argument_values
+              route: AudioContextConfigRoute.system,
+              //ignore: avoid_redundant_argument_values
+              respectSilence: false,
+            ).build();
         await AudioPlayer.global.setAudioContext(audioContext);
         await player.setAudioContext(audioContext);
 
@@ -322,11 +330,12 @@ void main() async {
         await player.stop();
         expect(player.state, PlayerState.stopped);
 
-        audioContext = AudioContextConfig(
-          //ignore: avoid_redundant_argument_values
-          route: AudioContextConfigRoute.system,
-          respectSilence: true,
-        ).build();
+        audioContext =
+            AudioContextConfig(
+              //ignore: avoid_redundant_argument_values
+              route: AudioContextConfigRoute.system,
+              respectSilence: true,
+            ).build();
         await AudioPlayer.global.setAudioContext(audioContext);
         await player.setAudioContext(audioContext);
 
@@ -343,8 +352,9 @@ void main() async {
     );
   });
 
-  testWidgets('Race condition on play and pause (#1687)',
-      (WidgetTester tester) async {
+  testWidgets('Race condition on play and pause (#1687)', (
+    WidgetTester tester,
+  ) async {
     final player = AudioPlayer();
 
     final futurePlay = player.play(mp3Url1TestData.source);
@@ -370,11 +380,13 @@ void main() async {
     () {
       /// The test is auditory only!
       /// It will succeed even if the wrong source is played.
-      testWidgets('Released wrong source on LOW_LATENCY (#1672)',
-          (WidgetTester tester) async {
-        var player = AudioPlayer()
-          ..setPlayerMode(PlayerMode.lowLatency)
-          ..setReleaseMode(ReleaseMode.stop);
+      testWidgets('Released wrong source on LOW_LATENCY (#1672)', (
+        WidgetTester tester,
+      ) async {
+        var player =
+            AudioPlayer()
+              ..setPlayerMode(PlayerMode.lowLatency)
+              ..setReleaseMode(ReleaseMode.stop);
 
         await player.play(wavAsset1TestData.source);
         await tester.pumpPlatform(const Duration(seconds: 1));
@@ -384,9 +396,10 @@ void main() async {
         await tester.pumpPlatform(const Duration(seconds: 1));
         await player.stop();
 
-        player = AudioPlayer()
-          ..setPlayerMode(PlayerMode.lowLatency)
-          ..setReleaseMode(ReleaseMode.stop);
+        player =
+            AudioPlayer()
+              ..setPlayerMode(PlayerMode.lowLatency)
+              ..setReleaseMode(ReleaseMode.stop);
 
         // This should play the new source, not the old one:
         await player.play(wavAsset1TestData.source);

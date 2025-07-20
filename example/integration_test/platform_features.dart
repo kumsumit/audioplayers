@@ -144,15 +144,15 @@ class PlatformFeatures {
     return kIsWeb
         ? webPlatformFeatures
         : defaultTargetPlatform == TargetPlatform.android
-            ? androidPlatformFeatures
-            : defaultTargetPlatform == TargetPlatform.iOS
-                ? iosPlatformFeatures
-                : defaultTargetPlatform == TargetPlatform.macOS
-                    ? macPlatformFeatures
-                    : defaultTargetPlatform == TargetPlatform.linux
-                        ? linuxPlatformFeatures
-                        : defaultTargetPlatform == TargetPlatform.windows
-                            ? windowsPlatformFeatures
-                            : const PlatformFeatures();
+        ? androidPlatformFeatures
+        : defaultTargetPlatform == TargetPlatform.iOS
+        ? iosPlatformFeatures
+        : defaultTargetPlatform == TargetPlatform.macOS
+        ? macPlatformFeatures
+        : defaultTargetPlatform == TargetPlatform.linux
+        ? linuxPlatformFeatures
+        : defaultTargetPlatform == TargetPlatform.windows
+        ? windowsPlatformFeatures
+        : const PlatformFeatures();
   }
 }

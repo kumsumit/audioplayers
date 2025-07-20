@@ -34,9 +34,7 @@ void main() {
         AudioLogger.log('info');
         AudioLogger.error('error');
 
-        expect(printZone.logs, [
-          '\x1B[31mAudioPlayers throw: error\x1B[0m',
-        ]);
+        expect(printZone.logs, ['\x1B[31mAudioPlayers throw: error\x1B[0m']);
       }),
     );
 

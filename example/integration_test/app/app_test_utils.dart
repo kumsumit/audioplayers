@@ -35,22 +35,21 @@ extension AppWidgetTester on WidgetTester {
     Duration? timeout = const Duration(seconds: 15),
     Duration? pollInterval = const Duration(milliseconds: 500),
     String? stackTrace,
-  }) async =>
-      _waitUntil(
-        (setFailureMessage) async {
-          try {
-            await pump();
-            await testExpectation();
-            return true;
-          } on TestFailure catch (e) {
-            setFailureMessage(e.message ?? '');
-            return false;
-          }
-        },
-        timeout: timeout,
-        pollInterval: pollInterval,
-        stackTrace: stackTrace,
-      );
+  }) async => _waitUntil(
+    (setFailureMessage) async {
+      try {
+        await pump();
+        await testExpectation();
+        return true;
+      } on TestFailure catch (e) {
+        setFailureMessage(e.message ?? '');
+        return false;
+      }
+    },
+    timeout: timeout,
+    pollInterval: pollInterval,
+    stackTrace: stackTrace,
+  );
 
   /// Waits until the [condition] returns true
   /// Will raise a complete with a [TimeoutException] if the
@@ -58,7 +57,7 @@ extension AppWidgetTester on WidgetTester {
   /// Copied from: https://github.com/jonsamwell/flutter_gherkin/blob/02a4af91d7a2512e0a4540b9b1ab13e36d5c6f37/lib/src/flutter/utils/driver_utils.dart#L86
   Future<void> _waitUntil(
     Future<bool> Function(void Function(String message) setFailureMessage)
-        condition, {
+    condition, {
     Duration? timeout = const Duration(seconds: 15),
     Duration? pollInterval = const Duration(milliseconds: 500),
     String? stackTrace,

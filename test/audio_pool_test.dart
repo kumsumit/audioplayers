@@ -60,8 +60,9 @@ void main() {
         maxPlayers: 3,
         audioCache: FakeAudioCache(),
       );
-      final stopFunctions =
-          await Future.wait(List.generate(5, (_) => pool.start()));
+      final stopFunctions = await Future.wait(
+        List.generate(5, (_) => pool.start()),
+      );
 
       expect(pool.availablePlayers.isEmpty, isTrue);
       expect(pool.currentPlayers.length, 5);

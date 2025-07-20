@@ -94,12 +94,12 @@ final mp3DataUriTestData = LibSourceTestData(
 );
 
 Future<LibSourceTestData> mp3BytesTestData() async => LibSourceTestData(
-      source: BytesSource(
-        await readBytes(Uri.parse(mp3Url1)),
-        mimeType: 'audio/mpeg',
-      ),
-      duration: const Duration(minutes: 3, seconds: 30, milliseconds: 76),
-    );
+  source: BytesSource(
+    await readBytes(Uri.parse(mp3Url1)),
+    mimeType: 'audio/mpeg',
+  ),
+  duration: const Duration(minutes: 3, seconds: 30, milliseconds: 76),
+);
 
 // Some sources are commented which are considered redundant
 Future<List<LibSourceTestData>> getAudioTestDataList() async {

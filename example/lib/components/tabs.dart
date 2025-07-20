@@ -18,14 +18,15 @@ class Tabs extends StatelessWidget {
           children: [
             TabBar(
               labelColor: Colors.black,
-              tabs: tabs
-                  .map(
-                    (tData) => Tab(
-                      key: tData.key != null ? Key(tData.key!) : null,
-                      text: tData.label,
-                    ),
-                  )
-                  .toList(),
+              tabs:
+                  tabs
+                      .map(
+                        (tData) => Tab(
+                          key: tData.key != null ? Key(tData.key!) : null,
+                          text: tData.label,
+                        ),
+                      )
+                      .toList(),
             ),
             Expanded(
               child: TabBarView(

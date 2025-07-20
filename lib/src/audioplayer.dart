@@ -131,8 +131,9 @@ class AudioPlayer {
   /// Stream of seek completions.
   ///
   /// An event is going to be sent as soon as the audio seek is finished.
-  Stream<void> get onSeekComplete => eventStream
-      .where((event) => event.eventType == AudioEventType.seekComplete);
+  Stream<void> get onSeekComplete => eventStream.where(
+    (event) => event.eventType == AudioEventType.seekComplete,
+  );
 
   Stream<bool> get _onPrepared => eventStream
       .where((event) => event.eventType == AudioEventType.prepared)
@@ -147,10 +148,8 @@ class AudioPlayer {
   AudioPlayer({String? playerId}) : playerId = playerId ?? _uuid.v4() {
     _onLogStreamSubscription = onLog.listen(
       (log) => AudioLogger.log('$log\nSource: $_source'),
-      onError: (Object e, [StackTrace? stackTrace]) => AudioLogger.error(
-        AudioPlayerException(this, cause: e),
-        stackTrace,
-      ),
+      onError: (Object e, [StackTrace? stackTrace]) =>
+          AudioLogger.error(AudioPlayerException(this, cause: e), stackTrace),
     );
     _onPlayerCompleteStreamSubscription = onPlayerComplete.listen(
       (_) async {
@@ -165,9 +164,7 @@ class AudioPlayer {
       },
     );
     _create();
-    positionUpdater = FramePositionUpdater(
-      getPosition: getCurrentPosition,
-    );
+    positionUpdater = FramePositionUpdater(getPosition: getCurrentPosition);
   }
 
   Future<void> _create() async {
@@ -175,7 +172,9 @@ class AudioPlayer {
       await global.ensureInitialized();
       await _platform.create(playerId);
       // Assign the event stream, now that the platform registered this player.
-      _eventStreamSubscription = _platform.getEventStream(playerId).listen(
+      _eventStreamSubscription = _platform
+          .getEventStream(playerId)
+          .listen(
             _eventStreamController.add,
             onError: _eventStreamController.addError,
           );
@@ -290,8 +289,9 @@ class AudioPlayer {
   Future<void> seek(Duration position) async {
     await creatingCompleter.future;
 
-    final futureSeekComplete =
-        onSeekComplete.first.timeout(const Duration(seconds: 30));
+    final futureSeekComplete = onSeekComplete.first.timeout(
+      const Duration(seconds: 30),
+    );
     final futureSeek = _platform.seek(playerId, position);
     // Wait simultaneously to ensure all errors are propagated through the same
     // future.
@@ -437,10 +437,9 @@ class AudioPlayer {
             defaultTargetPlatform == TargetPlatform.linux)) {
       // Convert to file as workaround
       final tempDir = (await getTemporaryDirectory()).path;
-      final bytesHash = Object.hashAll(bytes)
-          .toUnsigned(20)
-          .toRadixString(16)
-          .padLeft(5, '0');
+      final bytesHash = Object.hashAll(
+        bytes,
+      ).toUnsigned(20).toRadixString(16).padLeft(5, '0');
       final file = File('$tempDir/$bytesHash');
       await file.writeAsBytes(bytes);
       await setSourceDeviceFile(file.path, mimeType: mimeType);

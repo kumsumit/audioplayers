@@ -21,12 +21,14 @@ final wavUrl2 = '$host/files/audio/laser.wav';
 final wavUrl3 = '$host/files/audio/coins_non_ascii_и.wav';
 final mp3Url1 = '$host/files/audio/ambient_c_motion.mp3';
 final mp3Url2 = '$host/files/audio/nasa_on_a_mission.mp3';
-final m3u8StreamUrl = useLocalServer
-    ? '$host/files/live_streams/nasa_power_of_the_rovers.m3u8'
-    : 'https://ll-hls-test.cdn-apple.com/llhls4/ll-hls-test-04/multi.m3u8';
-final mpgaStreamUrl = useLocalServer
-    ? '$host/stream/mpeg'
-    : 'https://timesradio.wireless.radio/stream';
+final m3u8StreamUrl =
+    useLocalServer
+        ? '$host/files/live_streams/nasa_power_of_the_rovers.m3u8'
+        : 'https://ll-hls-test.cdn-apple.com/llhls4/ll-hls-test-04/multi.m3u8';
+final mpgaStreamUrl =
+    useLocalServer
+        ? '$host/stream/mpeg'
+        : 'https://timesradio.wireless.radio/stream';
 
 const wavAsset1 = 'coins.wav';
 const wavAsset2 = 'laser.wav';
@@ -88,17 +90,16 @@ class _SourcesTabState extends State<SourcesTab>
     Key? setSourceKey,
     Color? buttonColor,
     Key? playKey,
-  }) =>
-      _SourceTile(
-        setSource: () => _setSource(source),
-        play: () => _play(source),
-        removeSource: _removeSourceWidget,
-        title: title,
-        subtitle: subtitle,
-        setSourceKey: setSourceKey,
-        playKey: playKey,
-        buttonColor: buttonColor,
-      );
+  }) => _SourceTile(
+    setSource: () => _setSource(source),
+    play: () => _play(source),
+    removeSource: _removeSourceWidget,
+    title: title,
+    subtitle: subtitle,
+    setSourceKey: setSourceKey,
+    playKey: playKey,
+    buttonColor: buttonColor,
+  );
 
   Future<void> _setSourceBytesAsset(
     Future<void> Function(Source) fun, {
@@ -184,33 +185,37 @@ class _SourcesTabState extends State<SourcesTab>
           source: AssetSource(mp3Asset),
         ),
         _SourceTile(
-          setSource: () => _setSourceBytesAsset(
-            _setSource,
-            asset: wavAsset2,
-            mimeType: 'audio/wav',
-          ),
+          setSource:
+              () => _setSourceBytesAsset(
+                _setSource,
+                asset: wavAsset2,
+                mimeType: 'audio/wav',
+              ),
           setSourceKey: const Key('setSource-bytes-local'),
-          play: () => _setSourceBytesAsset(
-            _play,
-            asset: wavAsset2,
-            mimeType: 'audio/wav',
-          ),
+          play:
+              () => _setSourceBytesAsset(
+                _play,
+                asset: wavAsset2,
+                mimeType: 'audio/wav',
+              ),
           removeSource: _removeSourceWidget,
           title: 'Bytes - Local',
           subtitle: 'laser.wav',
         ),
         _SourceTile(
-          setSource: () => _setSourceBytesRemote(
-            _setSource,
-            url: mp3Url1,
-            mimeType: 'audio/mpeg',
-          ),
+          setSource:
+              () => _setSourceBytesRemote(
+                _setSource,
+                url: mp3Url1,
+                mimeType: 'audio/mpeg',
+              ),
           setSourceKey: const Key('setSource-bytes-remote'),
-          play: () => _setSourceBytesRemote(
-            _play,
-            url: mp3Url1,
-            mimeType: 'audio/mpeg',
-          ),
+          play:
+              () => _setSourceBytesRemote(
+                _play,
+                url: mp3Url1,
+                mimeType: 'audio/mpeg',
+              ),
           removeSource: _removeSourceWidget,
           title: 'Bytes - Remote',
           subtitle: 'ambient.mp3',
@@ -233,9 +238,10 @@ class _SourcesTabState extends State<SourcesTab>
       alignment: Alignment.bottomCenter,
       children: [
         TabContent(
-          children: sourceWidgets
-              .expand((element) => [element, const Divider()])
-              .toList(),
+          children:
+              sourceWidgets
+                  .expand((element) => [element, const Divider()])
+                  .toList(),
         ),
         Padding(
           padding: const EdgeInsets.all(16),
@@ -367,9 +373,10 @@ class _SourceDialogState extends State<_SourceDialog> {
               child: CustomDropDown<String>(
                 options: assetsList,
                 selected: path,
-                onChange: (value) => setState(() {
-                  path = value ?? '';
-                }),
+                onChange:
+                    (value) => setState(() {
+                      path = value ?? '';
+                    }),
               ),
             ),
           ],

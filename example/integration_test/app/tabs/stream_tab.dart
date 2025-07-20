@@ -139,11 +139,12 @@ extension StreamWidgetTester on WidgetTester {
     await waitFor(
       () async => expectWidgetHasDuration(
         const Key('onDurationText'),
-        matcher: (Duration? actual) => durationRangeMatcher(
-          actual,
-          duration,
-          deviation: const Duration(milliseconds: 500),
-        ),
+        matcher:
+            (Duration? actual) => durationRangeMatcher(
+              actual,
+              duration,
+              deviation: const Duration(milliseconds: 500),
+            ),
       ),
       timeout: timeout,
       stackTrace: st,

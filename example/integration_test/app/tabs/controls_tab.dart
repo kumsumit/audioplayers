@@ -43,7 +43,8 @@ Future<void> testControlsTab(
 
   if (features.hasSeek && !audioSourceTestData.isLiveStream) {
     // TODO(Gustl22): also test seeking in streams
-    final isImmediateDurationSupported = features.hasMp3Duration ||
+    final isImmediateDurationSupported =
+        features.hasMp3Duration ||
         !audioSourceTestData.sourceKey.contains('mp3');
 
     // Linux cannot complete seek if duration is not present.
@@ -52,8 +53,8 @@ Future<void> testControlsTab(
       if (isImmediateDurationSupported) {
         await tester.testPosition(
           Duration(seconds: audioSourceTestData.duration!.inSeconds ~/ 2),
-          matcher: (Object? value) =>
-              greaterThanOrEqualTo(value ?? Duration.zero),
+          matcher:
+              (Object? value) => greaterThanOrEqualTo(value ?? Duration.zero),
         );
       }
     });
@@ -111,8 +112,8 @@ Future<void> testControlsTab(
       await tester.doInStreamsTab((tester) async {
         await tester.testPosition(
           Duration.zero,
-          matcher: (Duration? position) =>
-              greaterThan(position ?? Duration.zero),
+          matcher:
+              (Duration? position) => greaterThan(position ?? Duration.zero),
         );
       });
       await tester.stop();

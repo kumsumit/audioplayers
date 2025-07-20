@@ -20,10 +20,11 @@ extension PropertiesWidgetTester on WidgetTester {
           const Key('durationText'),
           // TODO(gustl22): once duration is always null for streams,
           //  then can remove fallback for Duration.zero
-          matcher: (Duration? actual) => durationRangeMatcher(
-            actual ?? Duration.zero,
-            duration ?? Duration.zero,
-          ),
+          matcher:
+              (Duration? actual) => durationRangeMatcher(
+                actual ?? Duration.zero,
+                duration ?? Duration.zero,
+              ),
         );
       },
       timeout: timeout,

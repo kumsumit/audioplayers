@@ -54,8 +54,9 @@ class FakeGlobalAudioplayersPlatform
   @override
   Future<void> emitGlobalError(String code, String message) async {
     calls.add(FakeGlobalCall(method: 'emitGlobalError'));
-    eventStreamController
-        .addError(PlatformException(code: code, message: message));
+    eventStreamController.addError(
+      PlatformException(code: code, message: message),
+    );
   }
 
   @override

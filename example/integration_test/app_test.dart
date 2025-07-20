@@ -28,8 +28,9 @@ void main() {
 
   group('test functionality of sources', () {
     for (final audioSourceTestData in audioTestDataList) {
-      testWidgets('test source $audioSourceTestData',
-          (WidgetTester tester) async {
+      testWidgets('test source $audioSourceTestData', (
+        WidgetTester tester,
+      ) async {
         app.main();
         await tester.pumpAndSettle();
 
